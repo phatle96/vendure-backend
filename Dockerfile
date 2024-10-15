@@ -6,6 +6,7 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install --production
 COPY . .
+RUN npm run build:admin
 RUN npm run build
 CMD ["npm", "run", "start"]
 EXPOSE 3000
