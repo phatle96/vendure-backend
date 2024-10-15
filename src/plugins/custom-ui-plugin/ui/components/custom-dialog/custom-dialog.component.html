@@ -1,0 +1,18 @@
+<ng-template vdrDialogTitle>{{ title }}</ng-template>
+<!-- <label>Message</label>
+<input type="text" [(ngModel)]="message" /> -->
+<vdr-form-field [label]="'Message' | translate" for="message">
+  <input id="message" type="text" [(ngModel)]="message" />
+</vdr-form-field>
+<ng-template vdrDialogButtons>
+  <ng-container *ngFor="let button of buttons">
+    <button
+      class="button ml-2"
+      [class.primary]="button.type === 'primary'"
+      [class.danger]="button.type === 'danger'"
+      (click)="this.onClick(button.returnValue)"
+    >
+      {{ button.label }}
+    </button>
+  </ng-container>
+</ng-template>
