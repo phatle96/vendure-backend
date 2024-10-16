@@ -42,7 +42,6 @@ export class AdminNotificationsController {
                 payload: {
                     message: message
                 },
-                bridgeUrl: process.env.NOVU_BRIDGE_TUNNEL
             })
         })
         console.log("🚀 ~ AdminNotificationsController ~ userIdentifiers.forEach ~ payload:", payload)

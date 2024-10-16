@@ -19,8 +19,7 @@ export class NovuService {
         },
         payload: {
           message: message
-        },
-        bridgeUrl: process.env.NOVU_BRIDGE_TUNNEL
+        }
       })
     })
 

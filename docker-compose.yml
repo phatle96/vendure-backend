@@ -6,15 +6,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-    command: ["npm", "run", "start:server"]
+    command: ["sh", "-c", "npm run populate:data && npm run start:server"]
     volumes:
       - /usr/src/app
     environment:
-      DB_HOST: localhost
-      DB_PORT: 5430
+      DB_HOST: database
+      DB_PORT: 5432
       DB_NAME: vendure
       DB_USERNAME: postgres
       DB_PASSWORD: password
+    depends_on:
+      - database
   worker:
     build:
       context: .
@@ -23,17 +25,19 @@ services:
     volumes:
       - /usr/src/app
     environment:
-      DB_HOST: localhost
-      DB_PORT: 5430
+      DB_HOST: database
+      DB_PORT: 5432
       DB_NAME: vendure
       DB_USERNAME: postgres
       DB_PASSWORD: password
+    depends_on:
+      - server
   database:
     image: postgres
     volumes:
       - /var/lib/postgresql/data
     ports:
-      - 5430:5430
+      - 5433:5432
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: vendure
