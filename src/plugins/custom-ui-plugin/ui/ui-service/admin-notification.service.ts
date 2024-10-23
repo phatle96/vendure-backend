@@ -18,7 +18,7 @@ export class AdminNotificationService {
 
     client = new ApolloClient({
         link: new HttpLink({
-            uri: 'http://localhost:3000/admin-api',
+            uri: `http://46.250.237.108:3000/admin-api`,
         }),
         cache: new InMemoryCache(),
     });
