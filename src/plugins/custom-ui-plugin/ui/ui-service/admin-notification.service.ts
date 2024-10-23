@@ -18,7 +18,7 @@ export class AdminNotificationService {
 
     client = new ApolloClient({
         link: new HttpLink({
-            uri: `http://46.250.237.108:3000/admin-api`,
+            uri: `http://vendure-dev.innity.com.my:3000/admin-api`,
         }),
         cache: new InMemoryCache(),
     });
