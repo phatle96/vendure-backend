@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IBulkEvents, Novu } from '@novu/node';
-import { ID, ProductVariant, RequestContext, TransactionalConnection } from '@vendure/core';
+import { TransactionalConnection } from '@vendure/core';
 
 @Injectable()
 export class AdminNotiService {
