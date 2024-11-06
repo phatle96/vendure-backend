@@ -42,9 +42,13 @@ export class NovuApiService {
     }
 
     async subscriberCredentialsMutation(
-        ctx: RequestContext, id: ID, providerId: ChatProviderIdEnum | PushProviderIdEnum, credentials: IChannelCredentials
+        ctx: RequestContext,
+        id: ID,
+        providerIdEnum: ChatProviderIdEnum | PushProviderIdEnum,
+        providerId: string,
+        credentials: IChannelCredentials
     ): Promise<any> {
-        const response = await this.novu.subscribers.setCredentials(id as string, providerId, credentials)
+        const response = await this.novu.subscribers.setCredentials(id as string, providerIdEnum, credentials, providerId)
         if (response && response.data.data) {
             return response.data.data
         } else {

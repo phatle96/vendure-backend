@@ -12,7 +12,8 @@
     "copy": "npx copyfiles -u 1 'admin-ui/dist/**/*' dist && npx copyfiles -u 2 'dist/src/plugins/**' 'dist/src/*' dist",
     "build": "tsc && npm run copy",
     "build:admin": "npx rimraf admin-ui && npx ts-node src/compile-admin-ui.ts",
-    "populate:data": "npx ts-node ./src/populate-test-data.ts"
+    "populate:data": "npx ts-node ./src/populate-test-data.ts",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@nestjs/typeorm": "^10.0.2",
@@ -25,6 +26,8 @@
     "pg": "^8.13.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.3",
+    "@graphql-codegen/typescript": "4.1.1",
     "@vendure/cli": "3.0.3",
     "@vendure/create": "^3.0.5",
     "@vendure/ui-devkit": "^3.0.4",

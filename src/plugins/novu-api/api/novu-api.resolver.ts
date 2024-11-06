@@ -32,9 +32,13 @@ export class NovuApiResolver {
     // @Allow(Permission.Authenticated)
     async subscriberCredentialsMutation(
         @Ctx() ctx: RequestContext,
-        @Args() args: { id: ID, providerId: ChatProviderIdEnum | PushProviderIdEnum, credentials: IChannelCredentials }
-    ): Promise<any> {
-        return this.myService.subscriberCredentialsMutation(ctx, args.id, args.providerId, args.credentials);
+        @Args() args: {
+            id: ID,
+            providerIdEnum: ChatProviderIdEnum | PushProviderIdEnum,
+            providerId: string,
+            credentials: IChannelCredentials
+        }): Promise<any> {
+        return this.myService.subscriberCredentialsMutation(ctx, args.id, args.providerIdEnum, args.providerId, args.credentials);
     }
 
 }

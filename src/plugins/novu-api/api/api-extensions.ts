@@ -9,11 +9,15 @@ const novuApiExtensions = gql`
 
   extend type Mutation {
     myNewMutation(id: ID!): Boolean!
-    subscriberCredentialsMutation(id: ID!, providerId: String!, credentials: UpdateSubscriberCredentials!): Subscriber
+    subscriberCredentialsMutation(
+      id: ID!, 
+      providerIdEnum: String!,
+      providerId: String!, 
+      credentials: UpdateSubscriberCredentials!): Subscriber
   }
 
 
-  type Subscriber {
+  type Subscriber implements Node {
     id: ID!
     subscriberId: String
     firstName: String

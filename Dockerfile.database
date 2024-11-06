@@ -3,7 +3,7 @@ FROM postgres:latest
 
 # Set environment variables for PostgreSQL
 ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=password
+ENV POSTGRES_PASSWORD=I!l8vP-S@8;;hX;hL4ZcD41]2HDy+gHl
 ENV POSTGRES_DB=vendure
 
 # Expose the PostgreSQL default port
