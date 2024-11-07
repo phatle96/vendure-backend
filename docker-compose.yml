@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-    command: ["sh", "-c", "npm run populate:data && npm run start:server"]
+    command: ["npm", "run", "start:server"]
     volumes:
       - /usr/src/app
     environment:
@@ -35,9 +35,12 @@ services:
   database:
     image: postgres
     volumes:
-      - /var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - 5433:5432
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: vendure
+#Persist Postgres data when rebuild or recreate the container
+volumes:
+  postgres_data:
