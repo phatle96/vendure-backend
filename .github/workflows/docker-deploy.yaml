@@ -22,14 +22,17 @@ jobs:
         id: env_branch
         run: |
           if [[ "${GITHUB_REF}" == "refs/tags/v"* ]]; then
-            if [[ "${GITHUB_REF}" == *"/main/"* ]]; then
+            if [[ "${GITHUB_REF}" == *"-production" ]]; then
               echo "environment=production" >> $GITHUB_ENV
-            elif [[ "${GITHUB_REF}" == *"/staging/"* ]]; then
+            elif [[ "${GITHUB_REF}" == *"-staging" ]]; then
               echo "environment=staging" >> $GITHUB_ENV
             else
               echo "Unknown environment, exiting."
               exit 1
             fi
+          else
+            echo "Not a version tag, exiting."
+            exit 1
           fi
         shell: bash
 
