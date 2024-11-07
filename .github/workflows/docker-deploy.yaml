@@ -3,13 +3,12 @@ name: VPS Local Build and Deploy
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+-(staging|production)"
+      - "v[0-9]+\\.[0-9]+\\.[0-9]+-(staging|production)"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
-    # needs: build
 
     steps:
       - name: 1. Checkout repository
