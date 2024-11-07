@@ -12,7 +12,7 @@ export class AdminNotiService {
     novu = new Novu(process.env.NOVU_API_KEY || '');
 
 
-    async sendNotifications(userId: string[], message: string) {
+    async sendNotifications(userId: string[], subject: string, message: string) {
 
         const payload: IBulkEvents[] = []
 
@@ -23,6 +23,7 @@ export class AdminNotiService {
                     subscriberId: id,
                 },
                 payload: {
+                    subject: subject,
                     message: message
                 },
             })
