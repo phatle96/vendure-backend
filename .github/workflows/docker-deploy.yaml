@@ -38,7 +38,16 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VPS_PRIVATE_KEY }}
 
-      - name: 4. Create .env file on VPS
+      - name: 4. Pull the latest code
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+            cd ${{ vars.VPS_PATH }} &&
+            git fetch &&
+            git checkout ${{ github.ref_name == 'main' && 'main' || 'staging' }} &&
+            git pull origin ${{ github.ref_name == 'main' && 'main' || 'staging' }} 
+          "
+
+      - name: 5. Create .env file on VPS
         env:
           APP_ENV: ${{ secrets.APP_ENV }}
           PORT: ${{ secrets.PORT }}
@@ -68,14 +77,6 @@ jobs:
             echo 'NOVU_BRIDGE_TUNNEL=${NOVU_BRIDGE_TUNNEL}' >> ${{ vars.VPS_PATH }}/.env
           "
 
-      - name: 5. Pull the latest code
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
-            cd ${{ vars.VPS_PATH }} &&
-            git fetch origin &&
-            git checkout ${{ github.ref_name == 'main' && 'main' || 'staging' }} &&
-            git pull origin ${{ github.ref_name == 'main' && 'main' || 'staging' }} 
-          "
       - name: 6. Build Docker images
         run: |
           docker compose build
