@@ -6,7 +6,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-    command: ["npm", "run", "start:server"]
+    command: >
+      sh -c "if [ \"${POPULATE_DATA}\" = \"true\" ]; then
+        bash ./scripts/entrypoint.sh";
+      else
+        npm run start:server;
+      fi"
     volumes:
       - /usr/src/app
     environment:
