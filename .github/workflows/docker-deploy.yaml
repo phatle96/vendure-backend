@@ -5,16 +5,10 @@ on:
     tags:
       - "v[0-9]+\\.[0-9]+\\.[0-9]+-staging"
       - "v[0-9]+\\.[0-9]+\\.[0-9]+-production"
+    branches:
+      - local
   workflow_dispatch:
-    inputs:
-      build_type:
-        description: 'Specify the build type'
-        required: true
-        default: 'local'
-        options:
-          - local
-          - staging
-          - production
+    
 
 jobs:
   deploy:
@@ -28,14 +22,19 @@ jobs:
       - name: 2. Set environment based on branch
         id: env_branch
         run: |
-         if [[ "${{ github.event.inputs.build_type }}" == "production" ]]; then
-            echo "environment=production" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.build_type }}" == "staging" ]]; then
-            echo "environment=staging" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.build_type }}" == "local" ]]; then
+          if [[ "${GITHUB_REF}" == "refs/tags/v"* ]]; then
+            if [[ "${GITHUB_REF}" == *"-production" ]]; then
+              echo "environment=production" >> $GITHUB_ENV
+            elif [[ "${GITHUB_REF}" == *"-staging" ]]; then
+              echo "environment=staging" >> $GITHUB_ENV
+            else
+              echo "Unknown environment, exiting."
+              exit 1
+            fi
+          elif [[ "${GITHUB_REF}" == "refs/heads/local" ]] && [[ "${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}" == *"trigger-local-build"* ]]; then
             echo "environment=local" >> $GITHUB_ENV
           else
-            echo "Unknown environment, exiting."
+            echo "Not a valid tag or local branch commit message, exiting."
             exit 1
           fi
         shell: bash
