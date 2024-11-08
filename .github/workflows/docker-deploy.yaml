@@ -5,8 +5,16 @@ on:
     tags:
       - "v[0-9]+\\.[0-9]+\\.[0-9]+-staging"
       - "v[0-9]+\\.[0-9]+\\.[0-9]+-production"
-    branches:
-      - local
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Specify the build type'
+        required: true
+        default: 'local'
+        options:
+          - local
+          - staging
+          - production
 
 jobs:
   deploy:
@@ -20,19 +28,14 @@ jobs:
       - name: 2. Set environment based on branch
         id: env_branch
         run: |
-          if [[ "${GITHUB_REF}" == "refs/tags/v"* ]]; then
-            if [[ "${GITHUB_REF}" == *"-production" ]]; then
-              echo "environment=production" >> $GITHUB_ENV
-            elif [[ "${GITHUB_REF}" == *"-staging" ]]; then
-              echo "environment=staging" >> $GITHUB_ENV
-            else
-              echo "Unknown environment, exiting."
-              exit 1
-            fi
-          elif [[ "${GITHUB_REF}" == "refs/heads/local" ]] && [[ "${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}" == *"trigger-local-build"* ]]; then
+         if [[ "${{ github.event.inputs.build_type }}" == "production" ]]; then
+            echo "environment=production" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.build_type }}" == "staging" ]]; then
+            echo "environment=staging" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.build_type }}" == "local" ]]; then
             echo "environment=local" >> $GITHUB_ENV
           else
-            echo "Not a valid tag or local branch commit message, exiting."
+            echo "Unknown environment, exiting."
             exit 1
           fi
         shell: bash
@@ -59,9 +62,11 @@ jobs:
           SUPERADMIN_USERNAME: ${{ secrets.SUPERADMIN_USERNAME }}
           SUPERADMIN_PASSWORD: ${{ secrets.SUPERADMIN_PASSWORD }}
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
           DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
           DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POPULATE_DATA: ${{ vars.POPULATE_DATA }}
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
           NOVU_API_KEY: ${{ secrets.NOVU_API_KEY }}
           NOVU_BRIDGE_TUNNEL: ${{ secrets.NOVU_BRIDGE_TUNNEL }}
@@ -73,9 +78,11 @@ jobs:
             echo 'SUPERADMIN_USERNAME=${SUPERADMIN_USERNAME}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'SUPERADMIN_PASSWORD=${SUPERADMIN_PASSWORD}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_NAME=${DATABASE_NAME}' >> ${{ vars.VPS_PATH }}/.env &&
+            echo 'DATABASE_HOST=${DATABASE_HOST}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_PORT=${DATABASE_PORT}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_USERNAME=${DATABASE_USERNAME}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_PASSWORD=${DATABASE_PASSWORD}' >> ${{ vars.VPS_PATH }}/.env &&
+            echo 'POPULATE_DATA=${POPULATE_DATA}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DB_SCHEMA=${DB_SCHEMA}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'NOVU_API_KEY=${NOVU_API_KEY}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'NOVU_BRIDGE_TUNNEL=${NOVU_BRIDGE_TUNNEL}' >> ${{ vars.VPS_PATH }}/.env
