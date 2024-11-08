@@ -3,6 +3,8 @@ import {
     DefaultJobQueuePlugin,
     DefaultSearchPlugin,
     VendureConfig,
+    DefaultLogger,
+    LogLevel,
 } from '@vendure/core';
 import { defaultEmailHandlers, EmailPlugin, FileBasedTemplateLoader } from '@vendure/email-plugin';
 import { AssetServerPlugin } from '@vendure/asset-server-plugin';
@@ -10,6 +12,7 @@ import { AdminUiPlugin } from '@vendure/admin-ui-plugin';
 import 'dotenv/config';
 import path from 'path';
 import { AdminNotiPlugin } from './plugins/admin-noti-plugin/admin-noti.plugin';
+import { NovuApiPlugin } from './plugins/novu-api/novu-api.plugin';
 
 const IS_DEV = process.env.APP_ENV === 'dev';
 const serverPort = +process.env.PORT || 3000;
@@ -99,5 +102,7 @@ export const config: VendureConfig = {
             },
         }),
         AdminNotiPlugin,
+        NovuApiPlugin.init({}),
     ],
+    logger: new DefaultLogger({ level: LogLevel.Debug }),
 };

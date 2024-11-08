@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IBulkEvents, Novu } from '@novu/node';
-import { ID, ProductVariant, RequestContext, TransactionalConnection } from '@vendure/core';
+import { TransactionalConnection } from '@vendure/core';
 
 @Injectable()
 export class AdminNotiService {
@@ -12,7 +12,7 @@ export class AdminNotiService {
     novu = new Novu(process.env.NOVU_API_KEY || '');
 
 
-    async sendNotifications(userId: string[], message: string) {
+    async sendNotifications(userId: string[], subject: string, message: string) {
 
         const payload: IBulkEvents[] = []
 
@@ -23,6 +23,7 @@ export class AdminNotiService {
                     subscriberId: id,
                 },
                 payload: {
+                    subject: subject,
                     message: message
                 },
             })

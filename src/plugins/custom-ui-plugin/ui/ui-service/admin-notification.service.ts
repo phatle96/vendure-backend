@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {NotificationService} from '@vendure/admin-ui/core'
+import { NotificationService } from '@vendure/admin-ui/core'
 import { ApolloClient, InMemoryCache, gql, HttpLink } from '@apollo/client';
 
 
@@ -23,7 +23,7 @@ export class AdminNotificationService {
         cache: new InMemoryCache(),
     });
 
-    sendNotificationsQuery(ids: string[], message: string) {
+    sendNotificationsQuery(ids: string[], subject: string, message: string) {
 
         return gql`
         mutation {
@@ -33,10 +33,10 @@ export class AdminNotificationService {
     };
 
 
-    async sendNotification(ids: string[], message: string) {
+    async sendNotification(ids: string[], subject: string, message: string) {
         try {
             await this.client.mutate({
-                mutation: this.sendNotificationsQuery(ids, message),
+                mutation: this.sendNotificationsQuery(ids, subject, message),
             }).then(res => {
                 if (res.data.sendNotifications) {
                     this.notificationService.success('Notification sent successfully')
@@ -48,12 +48,12 @@ export class AdminNotificationService {
         }
     }
 
-    async sendBulkNotification(selection, message: string) {
+    async sendBulkNotification(selection, subject: string, message: string) {
 
         if (selection.length < 100) {
             const usersSelected = selection.map((c) => { return c.id });
-            console.log("🚀 ~ AdminNotificationService ~ sendBulkNotification ~ usersSelected:", usersSelected)
-            this.sendNotification(usersSelected, message)
+            // console.log("🚀 ~ AdminNotificationService ~ sendBulkNotification ~ usersSelected:", usersSelected)
+            this.sendNotification(usersSelected, subject, message)
         }
 
     }

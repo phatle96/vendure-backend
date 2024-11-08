@@ -10,8 +10,10 @@ export class AdminNotiResolver {
     ) { }
 
     @Mutation()
-    sendNotifications(@Ctx() ctx: RequestContext, @Args() { userId, message }: { userId: string[], message: string }) {
+    sendNotifications(
+        @Ctx() ctx: RequestContext,
+        @Args() { userId, subject, message }: { userId: string[], subject: string, message: string }) {
         // return this.adminNotiService.sendNotifications(ctx, collectionId)
-        return this.adminNotiService.sendNotifications(userId, message)
+        return this.adminNotiService.sendNotifications(userId, subject, message)
     }
 }

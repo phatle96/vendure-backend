@@ -15,7 +15,7 @@ export default [
                 .subscribe(response => {
                     if (response) {
                         console.log("🚀 ~ response:", response)
-                        notificationService.sendBulkNotification(selection, response);
+                        notificationService.sendBulkNotification(selection, 'You got a message from admin!',response);
                     }
                 })
         },

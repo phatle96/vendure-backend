@@ -3,6 +3,10 @@ import gql from 'graphql-tag';
 export const adminNotiApiExtension = gql`
 
     extend type Mutation {
-        sendNotifications(userId: [ID!]!, message: String): Boolean!
+        sendNotifications(
+            userId: [ID!]!,
+            subject: String, 
+            message: String
+            ): Boolean!
     }
 `;
