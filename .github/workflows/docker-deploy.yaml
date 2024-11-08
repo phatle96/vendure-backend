@@ -5,10 +5,7 @@ on:
     tags:
       - "v[0-9]+\\.[0-9]+\\.[0-9]+-staging"
       - "v[0-9]+\\.[0-9]+\\.[0-9]+-production"
-    branches:
-      - local
   workflow_dispatch:
-    
 
 jobs:
   deploy:
@@ -27,14 +24,14 @@ jobs:
               echo "environment=production" >> $GITHUB_ENV
             elif [[ "${GITHUB_REF}" == *"-staging" ]]; then
               echo "environment=staging" >> $GITHUB_ENV
+            elif [[ "${GITHUB_REF}" == *"-local" ]]; then
+              echo "environment=local" >> $GITHUB_ENV
             else
               echo "Unknown environment, exiting."
               exit 1
             fi
-          elif [[ "${GITHUB_REF}" == "refs/heads/local" ]] && [[ "${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}" == *"trigger-local-build"* ]]; then
-            echo "environment=local" >> $GITHUB_ENV
           else
-            echo "Not a valid tag or local branch commit message, exiting."
+            echo "Not a version tag, exiting."
             exit 1
           fi
         shell: bash
