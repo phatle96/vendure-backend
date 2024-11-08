@@ -60,6 +60,7 @@ jobs:
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
           DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_PORT_EXPOSE: ${{ secrets.DATABASE_PORT_EXPOSE }}
           DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           POPULATE_DATA: ${{ vars.POPULATE_DATA }}
@@ -76,6 +77,7 @@ jobs:
             echo 'DATABASE_NAME=${DATABASE_NAME}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_HOST=${DATABASE_HOST}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_PORT=${DATABASE_PORT}' >> ${{ vars.VPS_PATH }}/.env &&
+            echo 'DATABASE_PORT_EXPOSE=${DATABASE_PORT_EXPOSE}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_USERNAME=${DATABASE_USERNAME}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_PASSWORD=${DATABASE_PASSWORD}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'POPULATE_DATA=${POPULATE_DATA}' >> ${{ vars.VPS_PATH }}/.env &&
@@ -166,6 +168,7 @@ jobs:
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
           DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_PORT_EXPOSE: ${{ secrets.DATABASE_PORT_EXPOSE }}
           DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           POPULATE_DATA: ${{ vars.POPULATE_DATA }}
@@ -182,6 +185,7 @@ jobs:
             echo 'DATABASE_NAME=${DATABASE_NAME}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_HOST=${DATABASE_HOST}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_PORT=${DATABASE_PORT}' >> ${{ vars.VPS_PATH }}/.env &&
+            echo 'DATABASE_PORT_EXPOSE=${DATABASE_PORT_EXPOSE}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_USERNAME=${DATABASE_USERNAME}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'DATABASE_PASSWORD=${DATABASE_PASSWORD}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'POPULATE_DATA=${POPULATE_DATA}' >> ${{ vars.VPS_PATH }}/.env &&
