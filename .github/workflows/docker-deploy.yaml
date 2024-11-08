@@ -11,7 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == *'-production' && 'production' || github.ref == *'-staging' && 'staging' || github.ref == *'-local' && 'local' }}
+    environment: ${{ contains(github.ref, '-production') && 'production' || contains(github.ref, '-staging') && 'staging' || contains(github.ref, '-local') && 'local' }}
 
     steps:
       - name: 1. Checkout repository
