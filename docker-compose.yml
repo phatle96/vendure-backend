@@ -7,16 +7,12 @@ services:
     ports:
       - 3000:3000
     command: >
-      sh -c "if [ \"${POPULATE_DATA}\" = \"true\" ]; then
-        bash ./scripts/entrypoint.sh";
-      else
-        npm run start:server;
-      fi"
+      sh -c "[ \"$POPULATE_DATA\" = \"true\" ] && sh ./scripts/entrypoint.sh || npm run start:server"
     volumes:
       - /usr/src/app
     environment:
       DB_HOST: ${DATABASE_HOST}
-      DB_PORT: ${DATABASE_PORT}
+      DB_PORT: ${DATABASE_PORT_EXPOSE}
       DB_NAME: ${DATABASE_NAME}
       DB_USERNAME: ${DATABASE_USERNAME}
       DB_PASSWORD: ${DATABASE_PASSWORD}
@@ -31,7 +27,7 @@ services:
       - /usr/src/app
     environment:
       DB_HOST: ${DATABASE_HOST}
-      DB_PORT: ${DATABASE_PORT}
+      DB_PORT: ${DATABASE_PORT_EXPOSE}
       DB_NAME: ${DATABASE_NAME}
       DB_USERNAME: ${DATABASE_USERNAME}
       DB_PASSWORD: ${DATABASE_PASSWORD}
@@ -42,7 +38,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - ${DATABASE_PORT}:${DATABASE_PORT}
+      - ${DATABASE_PORT_EXPOSE}:${DATABASE_PORT}
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
