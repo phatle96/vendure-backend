@@ -16,6 +16,8 @@ import { NovuApiPlugin } from './plugins/novu-api/novu-api.plugin';
 
 const IS_DEV = process.env.APP_ENV === 'dev';
 const serverPort = +process.env.PORT || 3000;
+const assetPrefixUrl = process.env.ASSETPREFIX_URL || undefined;
+const appUrl = process.env.HOST_URL
 
 export const config: VendureConfig = {
     apiOptions: {
@@ -46,7 +48,7 @@ export const config: VendureConfig = {
             secret: process.env.COOKIE_SECRET,
         },
     },
-    dbConnectionOptions:{
+    dbConnectionOptions: {
         type: 'postgres',
         synchronize: true,
         logging: false,
@@ -71,7 +73,8 @@ export const config: VendureConfig = {
             // For local dev, the correct value for assetUrlPrefix should
             // be guessed correctly, but for production it will usually need
             // to be set manually to match your production url.
-            assetUrlPrefix: IS_DEV ? undefined : 'https://www.my-shop.com/assets/',
+            //assetUrlPrefix: IS_DEV ? undefined : 'https://www.my-shop.com/assets/',
+            assetUrlPrefix: assetPrefixUrl,
         }),
         DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
@@ -84,10 +87,10 @@ export const config: VendureConfig = {
             globalTemplateVars: {
                 // The following variables will change depending on your storefront implementation.
                 // Here we are assuming a storefront running at http://localhost:8080.
-                fromAddress: '"example" <noreply@example.com>',
-                verifyEmailAddressUrl: 'http://localhost:8080/verify',
-                passwordResetUrl: 'http://localhost:8080/password-reset',
-                changeEmailAddressUrl: 'http://localhost:8080/verify-email-address-change'
+                fromAddress: '"example" <noreply@vendure-dev.innity.com>',
+                verifyEmailAddressUrl: `${appUrl}/verify`,
+                passwordResetUrl: `${appUrl}/password-reset`,
+                changeEmailAddressUrl: `${appUrl}/verify-email-address-change`
             },
         }),
         // AdminUiPlugin,
@@ -97,9 +100,9 @@ export const config: VendureConfig = {
             app: {
                 path: path.join(__dirname, '../admin-ui/dist'),
             },
-            adminUiConfig: {
-                apiPort: serverPort,
-            },
+            //adminUiConfig: {
+            //    apiPort: serverPort,
+            //},
         }),
         AdminNotiPlugin,
         NovuApiPlugin.init({}),

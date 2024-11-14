@@ -18,7 +18,7 @@ export class AdminNotificationService {
 
     client = new ApolloClient({
         link: new HttpLink({
-            uri: `http://vendure-dev.innity.com.my:3000/admin-api`,
+            uri: `https://vendure-dev-api.innity.com.my/admin-api`,
         }),
         cache: new InMemoryCache(),
     });
@@ -27,7 +27,9 @@ export class AdminNotificationService {
 
         return gql`
         mutation {
-            sendNotifications(userId: ${JSON.stringify(ids)}, message: ${JSON.stringify(message)})
+            sendNotifications(userId: ${JSON.stringify(ids)},
+            subject:${JSON.stringify(subject)}, 
+            message: ${JSON.stringify(message)})
             }
         `
     };
@@ -50,6 +52,7 @@ export class AdminNotificationService {
 
     async sendBulkNotification(selection, subject: string, message: string) {
 
+        // TODO: Add code to handle if length >= 100
         if (selection.length < 100) {
             const usersSelected = selection.map((c) => { return c.id });
             // console.log("🚀 ~ AdminNotificationService ~ sendBulkNotification ~ usersSelected:", usersSelected)
