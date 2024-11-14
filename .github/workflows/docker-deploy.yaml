@@ -72,8 +72,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             echo 'HOST_URL=${HOST_URL}' > ${{ vars.VPS_PATH }}/.env &&
-            echo 'ASSETPREFIX_URL=${ASSETPREFIX_URL}' > ${{ vars.VPS_PATH }}/.env &&
-            echo 'APP_ENV=${APP_ENV}' > ${{ vars.VPS_PATH }}/.env &&
+            echo 'ASSETPREFIX_URL=${ASSETPREFIX_URL}' >> ${{ vars.VPS_PATH }}/.env &&
+            echo 'APP_ENV=${APP_ENV}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'PORT=${PORT}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'COOKIE_SECRET=${COOKIE_SECRET}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'SUPERADMIN_USERNAME=${SUPERADMIN_USERNAME}' >> ${{ vars.VPS_PATH }}/.env &&
