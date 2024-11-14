@@ -67,8 +67,12 @@ jobs:
           DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
           NOVU_API_KEY: ${{ secrets.NOVU_API_KEY }}
           NOVU_BRIDGE_TUNNEL: ${{ secrets.NOVU_BRIDGE_TUNNEL }}
+          HOST_URL: ${{ secrets.HOST_URL }}
+          ASSETPREFIX_URL: ${{ secrets.ASSETPREFIX_URL }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+            echo 'HOST_URL=${HOST_URL}' > ${{ vars.VPS_PATH }}/.env &&
+            echo 'ASSETPREFIX_URL=${ASSETPREFIX_URL}' > ${{ vars.VPS_PATH }}/.env &&
             echo 'APP_ENV=${APP_ENV}' > ${{ vars.VPS_PATH }}/.env &&
             echo 'PORT=${PORT}' >> ${{ vars.VPS_PATH }}/.env &&
             echo 'COOKIE_SECRET=${COOKIE_SECRET}' >> ${{ vars.VPS_PATH }}/.env &&
