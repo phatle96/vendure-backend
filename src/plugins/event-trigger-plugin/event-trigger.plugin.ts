@@ -1,12 +1,12 @@
 import { OnModuleInit } from '@nestjs/common';
 import { Novu } from '@novu/node';
-import { EventBus, PluginCommonModule, VendurePlugin, AccountRegistrationEvent } from '@vendure/core';
+import { EventBus, PluginCommonModule, VendurePlugin, AccountRegistrationEvent, ProductVariantPriceEvent } from '@vendure/core';
 
 @VendurePlugin({
     imports: [PluginCommonModule],
     compatibility: '^3.0.0',
 })
-export class AccountRegistrationEventPlugin implements OnModuleInit {
+export class EventTriggerPlugin implements OnModuleInit {
     constructor(
         private eventBus: EventBus,
     ) { }
@@ -32,5 +32,29 @@ export class AccountRegistrationEventPlugin implements OnModuleInit {
                     })
                 }
             });
+
+        this.eventBus.ofType(ProductVariantPriceEvent).subscribe(
+            async (event) => {
+                console.log('ProductVariantPriceEvent', event);
+                await this.novu.trigger('push-webhook', {
+                    to: [
+                        {
+                            subscriberId: 'corteza_user'
+                        },
+                        {
+                            subscriberId: 'corteza_user_debug'
+                        }
+                    ],
+                    payload: {
+                        data: {
+                            eventEntity: event.entity,
+                            eventInput: event.input ?? "",
+                            eventType: event.type
+                        }
+                    }
+                })
+
+            }
+        )
     }
 }
