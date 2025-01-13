@@ -13,6 +13,8 @@ import 'dotenv/config';
 import path from 'path';
 import { AdminNotiPlugin } from './plugins/admin-noti-plugin/admin-noti.plugin';
 import { NovuApiPlugin } from './plugins/novu-api/novu-api.plugin';
+import { CortezaPlugin } from './plugins/corteza-plugin/corteza.plugin';
+import { RestForCortezaPlugin } from './plugins/corteza-plugin/rest-for-corteza.plugin';
 
 const IS_DEV = process.env.APP_ENV === 'dev';
 const serverPort = +process.env.PORT || 3000;
@@ -106,6 +108,8 @@ export const config: VendureConfig = {
         }),
         AdminNotiPlugin,
         NovuApiPlugin.init({}),
+        CortezaPlugin,
+        RestForCortezaPlugin
     ],
     logger: new DefaultLogger({ level: LogLevel.Debug }),
 };
