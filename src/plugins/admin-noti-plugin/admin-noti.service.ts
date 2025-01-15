@@ -20,7 +20,7 @@ export class AdminNotiService {
             payload.push({
                 name: "server-notification",
                 to: {
-                    subscriberId: id,
+                    subscriberId: String(id),
                 },
                 payload: {
                     subject: subject,
@@ -32,6 +32,7 @@ export class AdminNotiService {
 
         if (payload.length) {
             const response = await this.novu.events.bulkTrigger(payload)
+            console.log("🚀 ~ AdminNotiService ~ sendNotifications ~ response:", response)
             if (response.status == 200 || response.status == 201) {
                 return true
             } else {
