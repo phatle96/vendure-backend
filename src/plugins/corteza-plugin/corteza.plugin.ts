@@ -30,7 +30,7 @@ export class CortezaPlugin implements OnModuleInit {
                 const body = {
                     data: {
                         cortezaClient: "420838497746681857",
-                        cortezaSecret: "v3XgT2xwE0GpKUwD6xTHlXpUKL7JkKXj7qKetggUpo5c8HphSYwwvUVh34ZWrRo4",
+                        cortezaSecret: "Ghfi5WG6hyZA5dvwlhJ7nnRCVDPXlMEtUik1Z2Zzrseff4xOnsg7kaihDX4CBlLf",
                         authUrl: "http://192.46.224.41:18080"
                     }
                 }
