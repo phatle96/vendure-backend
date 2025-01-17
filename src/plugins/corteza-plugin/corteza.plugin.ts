@@ -39,78 +39,78 @@ export class CortezaPlugin implements OnModuleInit {
                     const token = await axios.post(uri, body);
                     console.log(token.data)
                     if (token.data) {
-                        // this.authenticationClientsService.configuration.accessToken = `Bearer ${response.data.token}`;
-                        this.authenticationClientsService.defaultHeaders = { Authorization: `Bearer ${token.data.token}` };
-                        this.authenticationClientsService.systemAuthClientsClientIDGet("420838497746681857").subscribe((data) => {
-                            console.log(data.data);
-                        })
 
-                        switch (event.type) {
-                            case 'created':
-                                console.log('created');
-                                break;
 
-                            case 'updated':
-                                console.log('updated');
-                                const payload = {
-                                    // TODO: Replace with your namespaceID and moduleID
-                                    namespaceID: '423799963210809345',
-                                    moduleID: '424736063529943041',
-                                    query: `vendure_id LIKE ${event.entity[0].id}`,
-                                    limit: 10
-                                }
-                                this.recordService.defaultHeaders = { Authorization: `Bearer ${token.data.token}` };
-                                this.recordService.composeNamespaceNamespaceIDModuleModuleIDRecordGet(payload.namespaceID, payload.moduleID, payload.query)
-                                    .subscribe((record) => {
-                                        console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ record:", record.data.response.set)
-                                        const recordsResponse = record.data.response.set;
-                                        console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ recordsResponse:", recordsResponse[0].values)
-                                        if (recordsResponse.length == 1 &&
-                                            (recordsResponse[0].values.price !== event.entity[0].price ||
-                                                recordsResponse[0].values.currencyCode !== event.entity[0].currencyCode ||
-                                                recordsResponse[0].values.channelId !== event.entity[0].channelId)) {
-                                            const recordID = recordsResponse[0].recordID;
-                                            console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ recordID:", recordID)
-                                            const recordData: ComposeNamespaceNamespaceIDModuleModuleIDRecordRecordIDPostRequest = {
-                                                values: [
-                                                    {
-                                                        name: 'price',
-                                                        value: String(event.entity[0].price)
-                                                    },
-                                                    {
-                                                        name: 'currencyCode',
-                                                        value: event.entity[0].currencyCode
-                                                    },
-                                                    {
-                                                        name: 'channelId',
-                                                        value: String(event.entity[0].channelId)
-                                                    },
-                                                    {
-                                                        name: 'vendure_id',
-                                                        value: String(event.entity[0].id)
-                                                    },
-                                                    {
-                                                        name: 'variantId',
-                                                        value: String(event.entity[0].id)
-                                                    }
-                                                ]
-                                            }
+                        console.log("🚀 ~ CortezaPlugin ~ activeUserId:", event.ctx.activeUserId)
+                        console.log("🚀 ~ CortezaPlugin ~ sessionUserId:", event.ctx.session?.user?.id)
 
-                                            console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ entity:", event.entity[0].variant)
-                                            console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ recordData:", recordData)
 
-                                            this.recordService.composeNamespaceNamespaceIDModuleModuleIDRecordRecordIDPost(payload.namespaceID, payload.moduleID, recordID, recordData)
-                                                .subscribe((updatedRecord) => {
-                                                    console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ updatedRecord:", updatedRecord.data)
-                                                })
-                                        }
-                                    });
-                                break;
+                        // switch (event.type) {
+                        //     case 'created':
+                        //         console.log('created');
+                        //         break;
 
-                            case 'deleted':
-                                console.log('deleted');
-                                break;
-                        }
+                        //     case 'updated':
+                        //         console.log('updated');
+                        //         const payload = {
+                        //             // TODO: Replace with your namespaceID and moduleID
+                        //             namespaceID: '423799963210809345',
+                        //             moduleID: '424736063529943041',
+                        //             query: `vendure_id LIKE ${event.entity[0].id}`,
+                        //             limit: 10
+                        //         }
+                        //         this.recordService.defaultHeaders = { Authorization: `Bearer ${token.data.token}` };
+                        //         this.recordService.composeNamespaceNamespaceIDModuleModuleIDRecordGet(payload.namespaceID, payload.moduleID, payload.query)
+                        //             .subscribe((record) => {
+                        //                 console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ record:", record.data.response.set)
+                        //                 const recordsResponse = record.data.response.set;
+                        //                 console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ recordsResponse:", recordsResponse[0].values)
+                        //                 if (recordsResponse.length == 1 &&
+                        //                     (recordsResponse[0].values.price !== event.entity[0].price ||
+                        //                         recordsResponse[0].values.currencyCode !== event.entity[0].currencyCode ||
+                        //                         recordsResponse[0].values.channelId !== event.entity[0].channelId)) {
+                        //                     const recordID = recordsResponse[0].recordID;
+                        //                     console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ recordID:", recordID)
+                        //                     const recordData: ComposeNamespaceNamespaceIDModuleModuleIDRecordRecordIDPostRequest = {
+                        //                         values: [
+                        //                             {
+                        //                                 name: 'price',
+                        //                                 value: String(event.entity[0].price)
+                        //                             },
+                        //                             {
+                        //                                 name: 'currencyCode',
+                        //                                 value: event.entity[0].currencyCode
+                        //                             },
+                        //                             {
+                        //                                 name: 'channelId',
+                        //                                 value: String(event.entity[0].channelId)
+                        //                             },
+                        //                             {
+                        //                                 name: 'vendure_id',
+                        //                                 value: String(event.entity[0].id)
+                        //                             },
+                        //                             {
+                        //                                 name: 'variantId',
+                        //                                 value: String(event.entity[0].id)
+                        //                             }
+                        //                         ]
+                        //                     }
+
+                        //                     console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ entity:", event.entity[0].variant)
+                        //                     console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ recordData:", recordData)
+
+                        //                     this.recordService.composeNamespaceNamespaceIDModuleModuleIDRecordRecordIDPost(payload.namespaceID, payload.moduleID, recordID, recordData)
+                        //                         .subscribe((updatedRecord) => {
+                        //                             console.log("🚀 ~ CortezaPlugin ~ .subscribe ~ updatedRecord:", updatedRecord.data)
+                        //                         })
+                        //                 }
+                        //             });
+                        //         break;
+
+                        //     case 'deleted':
+                        //         console.log('deleted');
+                        //         break;
+                        // }
 
                     }
                 } catch (error) {
